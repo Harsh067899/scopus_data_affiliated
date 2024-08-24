@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scopus API Flask App</title>
+    <style>
+        /* Basic styling for the loading spinner */
+        .spinner {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Scopus API Data Fetcher</h1>
+    <form id="fetchForm" method="post">
+        <h2>Select Affiliations:</h2>
+        {% for aff_id, aff_name in affiliations.items() %}
+            <label>
+                <input type="checkbox" name="{{ aff_id }}" value="1">
+                {{ aff_name }}
+            </label><br>
+        {% endfor %}
+        <h2>Number of Entries:</h2>
+        <input type="number" name="count" value="25" min="1" max="100">
+        <br><br>
+        <button type="submit">Fetch Papers</button>
+        <div class="spinner" id="spinner"></div>
+    </form>
+
+    {% if papers %}
+        <br> <!-- Add some space before the download link -->
+        {% if download_url %}
+            <a href="{{ download_url }}" id="downloadLink">Download Excel</a>
+        {% endif %}
+    {% endif %}
+
+    {% if papers %}
+        <h2>Results (Total: {{ total }}):</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Affiliations</th>
+                    <th>Institutions</th>
+                    <th>Publication Date</th>
+                    <th>Source Title</th>
+                    <th>DOI</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paper in papers %}
+                    <tr>
+                        <td>{{ paper['Title'] }}</td>
+                        <td>{{ paper['Authors'] }}</td>
+                        <td>{{ paper['Affiliations'] }}</td>
+                        <td>{{ paper['Institutions'] }}</td>
+                        <td>{{ paper['Publication Date'] }}</td>
+                        <td>{{ paper['Source Title'] }}</td>
+                        <td>{{ paper['DOI'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <p>Remaining API Requests: {{ remaining_requests }}</p>
+
+    <script>
+        document.getElementById('fetchForm').addEventListener('submit', function() {
+            document.getElementById('spinner').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
