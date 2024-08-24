@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 absl-py==2.1.0
 accelerate==0.33.0
 aiohttp==3.9.3
@@ -445,3 +446,9 @@ xyzservices==2024.6.0
 yarl==1.9.4
 zipp==3.19.2
 zopfli==0.2.3
+=======
+Flask
+requests
+pandas
+gunicorn
+>>>>>>> 945223a4b6988bd6abeea654077f793522bb50ab
